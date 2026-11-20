@@ -234,7 +234,7 @@ La base se elige en `.env`; el esquema es el mismo (14 tablas) en las dos:
 | `127.0.0.1/banco_talentos_mail` | Desarrollo y pruebas en tu máquina |
 | `db.tecnoweb.org.bo/db_grupo24sa` | Demo compartida, si el docente consulta desde su entorno |
 
-Los datos **no se sincronizan**: si cambiás de base, cambiás de datos. El esquema propio `banco_talentos_mail` ya está creado en la base de la cátedra y el esquema `public` de esa base pertenece a grupos anteriores: no se toca.
+Los datos **no se sincronizan**: si cambiás de base, cambiás de datos. Para la entrega y la defensa se usa la de la cátedra; la local queda para pruebas. El esquema propio `banco_talentos_mail` ya está creado en la base de la cátedra y el esquema `public` de esa base pertenece a grupos anteriores: no se toca.
 
 Regla importante: **un solo equipo corre el poller por buzón**. Si dos personas lo dejan corriendo con bases distintas, ambas leen los mismos correos y cada una responde, así que el remitente recibe duplicados.
 
