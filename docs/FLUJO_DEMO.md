@@ -214,6 +214,43 @@ Anotá el ID del expediente nuevo (normalmente `4`).
 
 ---
 
+## Bloque 5 · Pruebas con Pedro (candidato de prueba)
+
+Cuenta: `elproo16399@gmail.com` (usuario 6). Expediente B `4`, plan `4`, evaluaciones `7` y `8` sin responder, consentimiento de evaluación vigente y **sin consolidado**.
+
+### 5.1 Pedro
+
+| Asunto | Cuerpo |
+|---|---|
+| `ACCESO[]` | vacío |
+| `MISEXP[]` | `TOKEN: <código de Pedro>` |
+| `CONSEXP["4"]` | `TOKEN: <código de Pedro>` |
+| `LISPLAN["4"]` | `TOKEN: <código de Pedro>` |
+| `VERPRU["7"]` | `TOKEN: <código de Pedro>` |
+| `RESPRU["7","Automatizaria el reporte y mediria el impacto."]` | `TOKEN: <código de Pedro>` |
+| `RESPRU["8","Priorizo por impacto y plazo."]` | `TOKEN: <código de Pedro>` |
+
+### 5.2 Reclutadora
+
+| Asunto | Cuerpo |
+|---|---|
+| `CALPRU["7","85","Respuesta aplicada"]` | `TOKEN: <código de Letizia>` |
+| `CALPRU["8","78","Criterio claro"]` | `TOKEN: <código de Letizia>` |
+| `CONSOL["4"]` | `TOKEN: <código de Letizia>` |
+| `RANKING["1"]` | `TOKEN: <código de Letizia>` |
+
+Después de `CONSOL`, Pedro aparece en el ranking del cargo 1 junto a Luis, Ana y Carlos.
+
+### 5.3 Autorización y despacho
+
+| Quién | Asunto | Cuerpo |
+|---|---|---|
+| Pedro | `CONSEN["4","INFORME_EMPRESA","SI","marcelojp03@gmail.com"]` | `TOKEN: <código de Pedro>` |
+| Letizia | `INFORME["4","Cumple el perfil del cargo"]` | `TOKEN: <código de Letizia>` |
+| Letizia | `DESINF["<informeId>"]` | `TOKEN: <código de Letizia>` |
+
+El administrador no puede ejecutar los pasos de Pedro: `INSEXP`, `MISEXP`, `ACTEXP`, `CONSEN` y `RESPRU` son exclusivos del candidato.
+
 ## Permisos por rol
 
 | Grupo | Comandos | Quién |
