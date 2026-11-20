@@ -25,6 +25,10 @@ public record Configuracion(Map<String, String> entorno) {
         }
     }
 
+    public int tokenMinutos() {
+        return entero("TOKEN_MINUTES", 15, 1, 120);
+    }
+
     public BaseDatos baseDatos() {
         return new BaseDatos(requerida("DB_URL"), requerida("DB_USER"), requerida("DB_PASSWORD"));
     }

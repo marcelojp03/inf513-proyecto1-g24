@@ -76,7 +76,7 @@ class IntegracionCorreoTest {
                     + "('reclutador@test.local', 'RECLUTADOR'), ('candidato@test.local', 'CANDIDATO')");
             return null;
         });
-        flujo = new FlujoCorreo(base, new Bitacora(Path.of("target", "logs-flujo")), java.time.Instant.parse("2026-01-01T00:00:00Z"));
+        flujo = new FlujoCorreo(base, new Bitacora(Path.of("target", "logs-flujo")), java.time.Instant.parse("2026-01-01T00:00:00Z"), 15);
         red = new CorreoRed(configuracion.correo(), new Bitacora(Path.of("target", "logs-red")));
     }
 

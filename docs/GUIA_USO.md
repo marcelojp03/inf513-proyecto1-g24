@@ -55,7 +55,7 @@ El sistema responde con un código:
 TOKEN: AbC123...
 ```
 
-Ese código vale **15 minutos** y sirve para **varios comandos**. Si pedís otro, el anterior deja de servir.
+Ese código vale lo que indique `TOKEN_MINUTES` (15 por defecto; en la demo, 30 minutos) y sirve para **varios comandos**. Si pedís otro, el anterior deja de servir.
 
 ## 4. Cómo usar el código
 
@@ -265,7 +265,7 @@ Regla importante: **un solo equipo corre el poller por buzón**. Si dos personas
 Sí, cada integrante puede operar con su propio correo:
 
 1. Un administrador registra cada dirección con `INSUSU["correo@dominio","ROL"]`.
-2. Cada persona pide su código con `ACCESO[]` desde su cuenta y usa ese `TOKEN` durante 15 minutos.
+2. Cada persona pide su código con `ACCESO[]` desde su cuenta y usa ese `TOKEN` durante la vigencia configurada.
 3. Todos escriben al mismo buzón y cada respuesta vuelve a quien escribió.
 4. Los candidatos pueden hacer su propio recorrido (CU2 y CU5); los reclutadores, el resto.
 
@@ -282,3 +282,4 @@ Primer parcial/
 ├── .env                    ← NO se sube
 └── .env.example            ← se sube, con valores vacíos
 ```
+

@@ -41,8 +41,9 @@ Buzón POP3 (UIDL) → CorreoRed → FlujoCorreo → Analizador → Catálogo �
 
 Decisiones de diseño:
 
-- **El `From` no autentica.** `ACCESO[]` emite un código de sesión, ligado a la cuenta y válido 15 minutos para varios comandos. El comando viaja en el asunto y el código en el cuerpo (`TOKEN: ...`). Pedir otro código invalida el anterior.
+- **El `From` no autentica.** `ACCESO[]` emite un código de sesión, ligado a la cuenta y válido 15 minutos por defecto (`TOKEN_MINUTES`; en la demo, 30) para varios comandos. El comando viaja en el asunto y el código en el cuerpo (`TOKEN: ...`). Pedir otro código invalida el anterior.
 - Guía de uso paso a paso: [`docs/GUIA_USO.md`](docs/GUIA_USO.md).
+- Guion de demostración con roles y tiempos: [`docs/GUION_DEMO.md`](docs/GUION_DEMO.md).
 - **El código se genera al despachar**, nunca se guarda en claro: en `token_acceso` solo queda su SHA-256.
 - **Idempotencia POP3**: cada mensaje se identifica por `UIDL` y se registra por huella; releer el buzón no reprocesa.
 - **Cola transaccional**: se reclama el envío (`ENVIANDO`) antes de hablar con SMTP. Un corte entre el envío y el commit deja el registro `INDETERMINADO` y no se reenvía solo, para no duplicar informes.
@@ -142,3 +143,4 @@ Los datos son ficticios. El personal se crea con el administrador; las cuentas d
 - La cola guarda el cuerpo pendiente hasta 3 intentos; no guarda credenciales ni códigos de acceso.
 - El SMTP de la cátedra no relay a externos desde IPs de hogar; hasta que se habilite, las respuestas salen por Gmail. Un solo equipo debe correr el poller por buzón.
 - No hay adjuntos, OCR ni IA: quedan fuera de este parcial.
+

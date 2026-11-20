@@ -45,11 +45,13 @@ public final class FlujoCorreo {
     private final Catalogo catalogo = new Catalogo();
     private final Bitacora log;
     private final Instant desde;
+    private final int tokenMinutos;
 
-    public FlujoCorreo(BaseDatos base, Bitacora log, Instant desde) {
+    public FlujoCorreo(BaseDatos base, Bitacora log, Instant desde, int tokenMinutos) {
         this.base = base;
         this.log = log;
         this.desde = desde;
+        this.tokenMinutos = tokenMinutos;
     }
 
     Set<String> registrados(List<String> huellas) throws SQLException {
@@ -212,22 +214,22 @@ public final class FlujoCorreo {
             return new Reclamo(s.id(), s.tipo(), s.destino(), s.asunto(), null, s.actor(), s.rol(), 0, true);
         }
         int intento = s.intentos() + 1;
-        String cuerpo = s.tipo().equals("ACCESO") ? tokenNuevo(db, s.actor()) : s.cuerpo();
+        String cuerpo = s.tipo().equals("ACCESO") ? tokenNuevo(db, s.actor(), tokenMinutos) : s.cuerpo();
         db.ejecutar("UPDATE correo_salida SET estado = 'ENVIANDO', intentos = ? WHERE id = ?", intento, s.id());
         return new Reclamo(s.id(), s.tipo(), s.destino(), s.asunto(), cuerpo, s.actor(), s.rol(), intento, false);
     }
 
-    private static String tokenNuevo(Sql db, long usuario) throws SQLException {
+    private static String tokenNuevo(Sql db, long usuario, int minutos) throws SQLException {
         byte[] bytes = new byte[24];
         ALEATORIO.nextBytes(bytes);
         String token = Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
         db.ejecutar("""
                 INSERT INTO token_acceso(usuario_id, huella, expira_en)
-                VALUES (?, ?, clock_timestamp() + interval '15 minutes')
+                VALUES (?, ?, clock_timestamp() + ? * interval '1 minute')
                 ON CONFLICT (usuario_id) DO UPDATE SET huella = excluded.huella, expira_en = excluded.expira_en
-                """, usuario, Huellas.sha256(token));
+                """, usuario, Huellas.sha256(token), minutos);
         return "Enviá un correo nuevo (no una respuesta) con el comando en el asunto y esta línea en el cuerpo de texto plano:\n\n"
-                + "TOKEN: " + token + "\n\nEl código vale 15 minutos y sirve para varios comandos. No lo compartas.";
+                + "TOKEN: " + token + "\n\nEl código vale " + minutos + " minutos y sirve para varios comandos. No lo compartas.";
     }
 
     private static boolean vigente(Sql db, Salida s) throws SQLException {

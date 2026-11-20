@@ -82,7 +82,7 @@ public final class Main {
                 System.err.println("No se pudo verificar el esquema. Revisá la configuración PostgreSQL y logs/error.log.");
                 return 1;
             }
-            var flujo = new FlujoCorreo(base, log, desde);
+            var flujo = new FlujoCorreo(base, log, desde, configuracion.tokenMinutos());
             var red = new CorreoRed(correo, log);
             try {
                 flujo.reconciliar();
