@@ -139,4 +139,5 @@ Los datos son ficticios. El personal se crea con el administrador; las cuentas d
 - El puntaje y el ranking son de demostración.
 - Un envío cortado entre SMTP y el commit queda `INDETERMINADO` y requiere revisión manual; se prefiere no duplicar antes que reenviar a ciegas.
 - La cola guarda el cuerpo pendiente hasta 3 intentos; no guarda credenciales ni códigos de acceso.
+- El SMTP de la cátedra no relay a externos desde IPs de hogar; hasta que se habilite, las respuestas salen por Gmail. Un solo equipo debe correr el poller por buzón.
 - No hay adjuntos, OCR ni IA: quedan fuera de este parcial.

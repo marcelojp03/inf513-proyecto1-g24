@@ -206,7 +206,6 @@ Los datos son ficticios. Reemplazá los IDs por los que devuelva cada respuesta.
 | `[COMANDO]` | El comando no existe; probá `HELP[]` |
 
 ## 8. Reglas y cuidados
-
 - **El código es personal.** No lo reenvíes ni lo pongas en el asunto.
 - **No mandes contraseñas ni datos sensibles** en el cuerpo del correo.
 - **No hay adjuntos**: el parcial no incluye OCR ni IA.
@@ -214,7 +213,43 @@ Los datos son ficticios. Reemplazá los IDs por los que devuelva cada respuesta.
 - La calificación y el ranking son **DEMO_V1**: puntaje manual y fórmula de demostración, no un baremo institucional.
 - El sistema no borra correos del buzón: los identifica por `UIDL` y no los reprocesa.
 
-## 9. Dónde va esta guía
+## 9. Si la respuesta no llega
+
+Primero revisá spam. Si el correo de respuesta no aparece:
+
+- El buzón de la cátedra **recibe bien** por POP3; el problema está en la salida.
+- Su SMTP rechaza relay hacia destinatarios externos desde IPs de hogar, con `550 5.7.1 Relaying denied`, y solo anuncia `AUTH CRAM-MD5`.
+- Por eso esta instalación envía las respuestas por **Gmail con App Password**. El remitente que ves es la cuenta Gmail, no el buzón de la cátedra.
+- El grupo solicitó al docente habilitar las IPs de los hogares. Mientras eso no ocurra, no cambies el SMTP a `mail.tecnoweb.org.bo`, porque el envío va a fallar.
+- Si el docente habilita el relay, alcanza con volver `SMTP_*` al servidor de la cátedra y poner `MAIL_FROM` en el buzón.
+
+Los pedidos de habilitación con nombres e IPs se guardan fuera del repositorio: son datos personales y el repositorio es público.
+
+## 10. Base de datos: local o de la cátedra
+
+La base se elige en `.env`; el esquema es el mismo (14 tablas) en las dos:
+
+| Base | Cuándo usarla |
+|---|---|
+| `127.0.0.1/banco_talentos_mail` | Desarrollo y pruebas en tu máquina |
+| `db.tecnoweb.org.bo/db_grupo24sa` | Demo compartida, si el docente consulta desde su entorno |
+
+Los datos **no se sincronizan**: si cambiás de base, cambiás de datos. El esquema propio `banco_talentos_mail` ya está creado en la base de la cátedra y el esquema `public` de esa base pertenece a grupos anteriores: no se toca.
+
+Regla importante: **un solo equipo corre el poller por buzón**. Si dos personas lo dejan corriendo con bases distintas, ambas leen los mismos correos y cada una responde, así que el remitente recibe duplicados.
+
+## 11. Varios integrantes
+
+Sí, cada integrante puede operar con su propio correo:
+
+1. Un administrador registra cada dirección con `INSUSU["correo@dominio","ROL"]`.
+2. Cada persona pide su código con `ACCESO[]` desde su cuenta y usa ese `TOKEN` durante 15 minutos.
+3. Todos escriben al mismo buzón y cada respuesta vuelve a quien escribió.
+4. Los candidatos pueden hacer su propio recorrido (CU2 y CU5); los reclutadores, el resto.
+
+Usá direcciones reales solo con permiso de su titular. Para una demostración alcanza con datos ficticios, y conviene no registrar direcciones de terceros sin avisarles.
+
+## 12. Dónde va esta guía
 
 Este archivo se versiona en el repositorio (`docs/GUIA_USO.md`) porque no contiene secretos y forma parte de la entrega. Las credenciales van únicamente en `.env`, que está ignorado por Git.
 
