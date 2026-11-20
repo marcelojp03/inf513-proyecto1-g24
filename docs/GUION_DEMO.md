@@ -6,7 +6,7 @@ Los datos ya están cargados con `sql/02_datos_demo.sql` y `sql/03_datos_prueba_
 
 | Dato | Valor |
 |---|---|
-| Usuarios | 6: Marcelo (admin), Letizia (reclutador), Luis (candidato), Pedro (prueba) y dos ficticios |
+| Usuarios | 7: Marcelo (admin), Letizia (reclutador), Luis (candidato), Pedro (prueba), un reclutador institucional y dos ficticios |
 | Empresa | FICCT, contacto `marcelojp03@gmail.com` |
 | Cargo | Analista de datos, Administración, 12 meses |
 | Instrumentos | `TEC-01` y `PER-01`, ambos versión 1 |
@@ -24,6 +24,7 @@ Los datos ya están cargados con `sql/02_datos_demo.sql` y `sql/03_datos_prueba_
 | Letizia | `RECLUTADOR` | `mendietaletizia@gmail.com` |
 | Luis | `CANDIDATO` | `guzmanluisdavid12@gmail.com` |
 | Pedro | `CANDIDATO` (cuenta de prueba) | `elproo16399@gmail.com` |
+| Marcelo (institucional) | `RECLUTADOR` | `mjimenezp126@ficct.uagrm.edu.bo` |
 
 ## Antes de la defensa
 

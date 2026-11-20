@@ -81,13 +81,15 @@ Si un ID no coincide, usá el que devuelva el comando anterior.
 
 ---
 
-## Bloque 2 · Reclutadora (Letizia, `mendietaletizia@gmail.com`)
+## Bloque 2 · Reclutador (Letizia o la cuenta FICCT)
+
+Cualquiera de las dos cuentas sirve para este bloque: `mendietaletizia@gmail.com` o `mjimenezp126@ficct.uagrm.edu.bo`. Cada una pide su propio `ACCESO[]` y usa su propio código.
 
 ### 2.1 Pedir código
 
 | Asunto | Cuerpo | Qué hace |
 |---|---|---|
-| `ACCESO[]` | vacío | Envía el código de sesión de Letizia |
+| `ACCESO[]` | vacío | Envía el código de sesión del reclutador |
 
 ### 2.2 Trazabilidad y plan
 
