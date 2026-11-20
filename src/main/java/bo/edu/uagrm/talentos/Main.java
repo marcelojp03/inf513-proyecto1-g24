@@ -73,10 +73,12 @@ public final class Main {
             boolean unaVez = opcion.equals("--una-vez");
             System.out.println("Banco de Talentos 18B | POP3 → PostgreSQL → SMTP");
             do {
-                boolean ok = ciclo(flujo, red, log);
-                if (unaVez) return ok ? 0 : 1;
+                var ciclo = ciclo(flujo, red, log);
+                if (unaVez) return ciclo.ok() ? 0 : 1;
                 try {
-                    Thread.sleep(correo.intervaloSegundos() * 1000L);
+                    // Tras procesar algo se vuelve a mirar enseguida; en reposo se respeta el intervalo.
+                    long espera = ciclo.actividad() > 0 ? 3 : correo.intervaloSegundos();
+                    Thread.sleep(espera * 1000L);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     return 0;
@@ -89,10 +91,13 @@ public final class Main {
         }
     }
 
-    private static boolean ciclo(FlujoCorreo flujo, CorreoRed red, Bitacora log) {
+    private record Ciclo(boolean ok, int actividad) {}
+
+    private static Ciclo ciclo(FlujoCorreo flujo, CorreoRed red, Bitacora log) {
         boolean ok = true;
+        int actividad = 0;
         try {
-            red.leer(flujo);
+            actividad += red.leer(flujo);
         } catch (MessagingException e) {
             log.error("canal=POP3 resultado=NO_DISPONIBLE");
             ok = false;
@@ -101,13 +106,13 @@ public final class Main {
             ok = false;
         }
         try {
-            flujo.despachar(red::enviar);
+            actividad += flujo.despachar(red::enviar);
         } catch (SQLException e) {
             log.error("canal=JDBC fase=SALIDA sqlstate=" + estadoSql(e));
             ok = false;
         }
         if (!ok) System.err.println("Ciclo incompleto. Revisá la bitácora de errores.");
-        return ok;
+        return new Ciclo(ok, actividad);
     }
 
     private static String estadoSql(SQLException e) {

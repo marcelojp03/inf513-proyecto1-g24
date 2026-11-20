@@ -225,6 +225,8 @@ Primero revisá spam. Si el correo de respuesta no aparece:
 
 Los pedidos de habilitación con nombres e IPs se guardan fuera del repositorio: son datos personales y el repositorio es público.
 
+La demora normal es de segundos: el sistema mira el buzón cada 8 segundos y responde enseguida. Gmail puede sumar hasta un minuto la primera vez o si el remitente es nuevo; marcarlo como seguro ayuda.
+
 ## 10. Base de datos: local o de la cátedra
 
 La base se elige en `.env`; el esquema es el mismo (14 tablas) en las dos:
