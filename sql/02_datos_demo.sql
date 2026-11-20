@@ -18,7 +18,7 @@ DECLARE
     v_plan2 bigint;
     v_plan3 bigint;
 BEGIN
-    IF EXISTS (SELECT 1 FROM empresa WHERE nombre = 'Acme SRL') THEN
+    IF EXISTS (SELECT 1 FROM empresa WHERE nombre = 'FICCT') THEN
         RAISE NOTICE 'Los datos de demostración ya están cargados.';
         RETURN;
     END IF;
@@ -30,7 +30,7 @@ BEGIN
         RAISE EXCEPTION 'Faltan las cuentas base (administrador, candidato y reclutador).';
     END IF;
 
-    INSERT INTO empresa(nombre, correo_informes) VALUES ('Acme SRL', 'marcelojp03@gmail.com') RETURNING id INTO v_empresa;
+    INSERT INTO empresa(nombre, correo_informes) VALUES ('FICCT', 'marcelojp03@gmail.com') RETURNING id INTO v_empresa;
 
     INSERT INTO cargo(empresa_id, nombre, carrera, experiencia_meses, competencias, funciones)
     VALUES (v_empresa, 'Analista de datos', 'Administracion', 12,
@@ -121,4 +121,5 @@ UNION ALL SELECT 'evaluaciones', count(*) FROM evaluacion
 UNION ALL SELECT 'consolidados', count(*) FROM consolidado
 UNION ALL SELECT 'eventos', count(*) FROM evento_expediente
 UNION ALL SELECT 'informes', count(*) FROM informe;
+
 

@@ -93,6 +93,9 @@ public final class Main {
             }
             boolean unaVez = opcion.equals("--una-vez");
             System.out.println("Banco de Talentos 18B | POP3 → PostgreSQL → SMTP");
+            System.out.println("BD: " + baseVisible(configuracion.valor("DB_URL", "")) + " | POP3: " + correo.pop().host() + ":" + correo.pop().puerto()
+                    + " | SMTP: " + correo.smtp().host() + ":" + correo.smtp().puerto());
+            System.out.println("Sondeo cada " + correo.intervaloSegundos() + " s | Código válido " + configuracion.tokenMinutos() + " min");
             do {
                 var ciclo = ciclo(flujo, red, log);
                 if (unaVez) return ciclo.ok() ? 0 : 1;
@@ -139,5 +142,11 @@ public final class Main {
     private static String estadoSql(SQLException e) {
         String estado = e.getSQLState();
         return estado != null && estado.matches("[A-Z0-9]{5}") ? estado : "-";
+    }
+
+    private static String baseVisible(String url) {
+        String limpio = url.replaceFirst("^jdbc:postgresql://", "");
+        int consulta = limpio.indexOf('?');
+        return consulta >= 0 ? limpio.substring(0, consulta) : limpio;
     }
 }

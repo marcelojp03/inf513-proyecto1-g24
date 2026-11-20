@@ -75,6 +75,10 @@ public final class FlujoCorreo {
         String evento = "entrada=" + resultado.id() + " comando=" + resultado.comando() + " resultado=" + resultado.codigo();
         log.acceso(evento);
         if (!Set.of("OK", "IGNORADO", "IGNORADO_ANTIGUO").contains(resultado.codigo())) log.error(evento);
+        System.out.println("[ENTRADA #" + resultado.id() + "] de="
+                + (mensaje.remitente() == null ? "(sin remitente)" : mensaje.remitente())
+                + " | asunto=" + recorte(sinTokens(mensaje.asunto()), 120)
+                + " | comando=" + resultado.comando() + " | resultado=" + resultado.codigo());
         return true;
     }
 
@@ -184,6 +188,7 @@ public final class FlujoCorreo {
             if (reclamo == null) break;
             if (reclamo.cancelado()) {
                 log.acceso("salida=" + reclamo.id() + " estado=CANCELADO");
+                System.out.println("[SALIDA #" + reclamo.id() + "] cancelada: autorización o consentimiento ya no vigente");
                 continue;
             }
             try {
@@ -191,10 +196,13 @@ public final class FlujoCorreo {
             } catch (MessagingException e) {
                 Envio envio = base.transaccion(db -> fallar(db, reclamo));
                 log.error("salida=" + envio.id() + " estado=" + envio.estado() + " motivo=" + diagnostico(e));
+                System.out.println("[SALIDA #" + envio.id() + "] fallo SMTP: " + diagnostico(e));
                 continue;
             }
             Envio envio = base.transaccion(db -> resolver(db, reclamo.id(), "ACEPTADO_SMTP"));
             log.acceso("salida=" + envio.id() + " estado=" + envio.estado());
+            System.out.println("[SALIDA #" + envio.id() + "] a=" + reclamo.destino() + " | asunto=" + reclamo.asunto());
+            mostrarCuerpo(reclamo.cuerpo());
             aceptados++;
         }
         return aceptados;
@@ -257,8 +265,24 @@ public final class FlujoCorreo {
         return new Envio(id, estado);
     }
 
-    public static String diagnostico(MessagingException e) {
-        StringBuilder texto = new StringBuilder();
+    private static void mostrarCuerpo(String cuerpo) {
+        if (cuerpo == null || cuerpo.isBlank()) return;
+        String limpio = sinTokens(cuerpo);
+        if (limpio.length() > 1500) limpio = limpio.substring(0, 1500) + "\n  …";
+        System.out.println("  " + limpio.replace("\n", "\n  "));
+    }
+
+    private static String sinTokens(String texto) {
+        return texto == null ? "" : texto.replaceAll("(?i)(token:\\s*)[A-Za-z0-9_-]{8,}", "$1********");
+    }
+
+    private static String recorte(String texto, int max) {
+        if (texto == null) return "";
+        String limpio = texto.replace("\r", " ").replace("\n", " ");
+        return limpio.length() > max ? limpio.substring(0, max) + "…" : limpio;
+    }
+
+    public static String diagnostico(MessagingException e) {        StringBuilder texto = new StringBuilder();
         Throwable actual = e;
         for (int i = 0; actual != null && i < 4; i++) {
             if (actual.getMessage() != null) texto.append(" | ").append(actual.getMessage());

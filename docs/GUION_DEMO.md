@@ -7,7 +7,7 @@ Los datos ya están cargados con `sql/02_datos_demo.sql`; en vivo solo se muestr
 | Dato | Valor |
 |---|---|
 | Usuarios | 5: Marcelo (admin), Letizia (reclutador), Luis (candidato) y dos candidatos ficticios |
-| Empresa | Acme SRL, contacto `marcelojp03@gmail.com` |
+| Empresa | FICCT, contacto `marcelojp03@gmail.com` |
 | Cargo | Analista de datos, Administración, 12 meses |
 | Instrumentos | `TEC-01` y `PER-01`, ambos versión 1 |
 | Expedientes B | Luis 79, Ana Demo 86, Carlos Demo 61 |
@@ -136,3 +136,4 @@ Qué destacar: el despacho exige consentimiento del candidato y contacto autoriz
 - El contacto de la empresa es un buzón real para que el informe no rebote.
 - El puntaje lo puso una persona; el sistema no inventa notas.
 - No se muestra `.env` ni se dictan códigos en voz alta.
+

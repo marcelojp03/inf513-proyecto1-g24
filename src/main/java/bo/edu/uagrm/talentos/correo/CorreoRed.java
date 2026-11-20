@@ -65,7 +65,10 @@ public final class CorreoRed {
             inbox.open(Folder.READ_ONLY);
             try {
                 Message[] mensajes = inbox.getMessages();
-                if (mensajes.length == 0) return 0;
+                if (mensajes.length == 0) {
+                    System.out.println("[POP3] sin mensajes.");
+                    return 0;
+                }
                 var perfil = new FetchProfile();
                 perfil.add(UIDFolder.FetchProfileItem.UID);
                 inbox.fetch(mensajes, perfil);
@@ -96,6 +99,7 @@ public final class CorreoRed {
                         log.error("canal=POP3 resultado=MENSAJE_ILEGIBLE");
                     }
                 }
+                System.out.println("[POP3] mensajes=" + mensajes.length + " | procesados=" + procesados);
             } finally {
                 inbox.close(false);
             }

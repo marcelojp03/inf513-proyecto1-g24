@@ -229,6 +229,8 @@ Los pedidos de habilitación con nombres e IPs se guardan fuera del repositorio:
 
 La demora normal es de segundos: el sistema mira el buzón cada 8 segundos y responde enseguida. Gmail puede sumar hasta un minuto la primera vez o si el remitente es nuevo; marcarlo como seguro ayuda.
 
+La consola muestra el recorrido para que se pueda proyectar: `[POP3]` con la cantidad de mensajes, `[ENTRADA #]` con remitente, asunto, comando y resultado, y `[SALIDA #]` con destinatario, asunto y el cuerpo de la respuesta. Los códigos `TOKEN:` se muestran enmascarados.
+
 ### Cuando el docente habilite las IPs
 
 No hace falta tocar código, solo `.env`:
