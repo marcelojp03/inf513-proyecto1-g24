@@ -74,6 +74,8 @@ No respondas el correo del código: mandá uno nuevo. El sistema contesta al rem
 
 ## 5. Catálogo de comandos
 
+Versión para copiar y pegar: [`COMANDOS.md`](COMANDOS.md).
+
 ### CU1 · Usuarios
 
 | Comando | Parámetros | Rol |

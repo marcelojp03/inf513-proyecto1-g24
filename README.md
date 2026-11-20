@@ -43,6 +43,7 @@ Decisiones de diseño:
 
 - **El `From` no autentica.** `ACCESO[]` emite un código de sesión, ligado a la cuenta y válido 15 minutos por defecto (`TOKEN_MINUTES`; en la demo, 30) para varios comandos. El comando viaja en el asunto y el código en el cuerpo (`TOKEN: ...`). Pedir otro código invalida el anterior.
 - Guía de uso paso a paso: [`docs/GUIA_USO.md`](docs/GUIA_USO.md).
+- Lista de comandos para copiar: [`docs/COMANDOS.md`](docs/COMANDOS.md).
 - Guion de demostración con roles y tiempos: [`docs/GUION_DEMO.md`](docs/GUION_DEMO.md).
 - **El código se genera al despachar**, nunca se guarda en claro: en `token_acceso` solo queda su SHA-256.
 - **Idempotencia POP3**: cada mensaje se identifica por `UIDL` y se registra por huella; releer el buzón no reprocesa.
