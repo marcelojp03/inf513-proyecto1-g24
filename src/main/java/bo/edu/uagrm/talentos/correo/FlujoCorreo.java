@@ -255,7 +255,7 @@ public final class FlujoCorreo {
         return new Envio(id, estado);
     }
 
-    private static String diagnostico(MessagingException e) {
+    public static String diagnostico(MessagingException e) {
         StringBuilder texto = new StringBuilder();
         Throwable actual = e;
         for (int i = 0; actual != null && i < 4; i++) {

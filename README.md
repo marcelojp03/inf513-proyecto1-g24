@@ -89,6 +89,7 @@ Primer administrador:
 ```powershell
 .\ejecutar.ps1 --crear-admin      # usa ADMIN_EMAIL
 .\ejecutar.ps1 --una-vez          # un ciclo, útil para probar
+.\ejecutar.ps1 --verificar-correo # POP3 + envío de prueba a MAIL_FROM
 .\ejecutar.ps1                    # bucle continuo
 ```
 

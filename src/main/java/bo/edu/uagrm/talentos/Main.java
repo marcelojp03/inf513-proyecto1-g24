@@ -19,38 +19,59 @@ public final class Main {
 
     private static int iniciar(String[] args) {
         String opcion = args.length == 0 ? "" : args[0];
-        if (args.length > 1 || !java.util.Set.of("", "--help", "--una-vez", "--crear-admin").contains(opcion)) {
+        if (args.length > 1 || !java.util.Set.of("", "--help", "--una-vez", "--crear-admin", "--verificar-correo").contains(opcion)) {
             System.err.println("Opción no reconocida. Usá --help.");
             return 2;
         }
         if (opcion.equals("--help")) {
-            System.out.println("Banco de Talentos 18B | java -jar banco-talentos-mail.jar [--una-vez | --crear-admin]\n"
+            System.out.println("Banco de Talentos 18B | java -jar banco-talentos-mail.jar [--una-vez | --crear-admin | --verificar-correo]\n"
                     + "Configuración por variables de entorno. Consultá README.md.");
             return 0;
         }
 
         var configuracion = new Configuracion(System.getenv());
-        BaseDatos base;
+        boolean verificar = opcion.equals("--verificar-correo");
+        BaseDatos base = null;
         Configuracion.Correo correo;
-        String primerAdmin;
+        String primerAdmin = null;
         java.time.Instant desde;
         try {
-            base = configuracion.baseDatos();
-            primerAdmin = opcion.equals("--crear-admin") ? configuracion.direccion("ADMIN_EMAIL") : null;
             desde = configuracion.correoDesde();
-            correo = primerAdmin == null ? configuracion.correo() : null;
+            if (verificar) {
+                correo = configuracion.correo();
+            } else {
+                base = configuracion.baseDatos();
+                primerAdmin = opcion.equals("--crear-admin") ? configuracion.direccion("ADMIN_EMAIL") : null;
+                correo = primerAdmin == null ? configuracion.correo() : null;
+            }
         } catch (IllegalArgumentException e) {
             System.err.println(e.getMessage());
             return 2;
         }
 
         try (var log = new Bitacora(Path.of(configuracion.valor("LOG_DIR", "logs")))) {
+            if (verificar) {
+                var red = new CorreoRed(correo, log);
+                try {
+                    int mensajes = red.contarMensajes();
+                    red.enviar(correo.remitente(), "Banco de Talentos | Prueba de correo",
+                            "Verificación de configuración. Si recibís este mensaje, el SMTP configurado puede entregar respuestas.");
+                    log.acceso("verificacion=OK mensajes=" + mensajes);
+                    System.out.println("POP3 OK (" + mensajes + " mensajes). SMTP OK: prueba enviada a " + correo.remitente() + ".");
+                    return 0;
+                } catch (MessagingException e) {
+                    log.error("verificacion=FALLO motivo=" + FlujoCorreo.diagnostico(e));
+                    System.err.println("Falló la verificación. Revisá logs/error.log.");
+                    return 1;
+                }
+            }
             try {
                 base.lectura(d -> d.existe("SELECT 1 FROM usuario"));
                 if (primerAdmin != null) {
+                    String admin = primerAdmin;
                     boolean creado = base.transaccion(d -> {
-                        d.ejecutar("INSERT INTO usuario(correo, rol) VALUES (?, 'ADMINISTRADOR') ON CONFLICT (correo) DO NOTHING", primerAdmin);
-                        return d.existe("SELECT 1 FROM usuario WHERE correo = ? AND rol = 'ADMINISTRADOR' AND activo", primerAdmin);
+                        d.ejecutar("INSERT INTO usuario(correo, rol) VALUES (?, 'ADMINISTRADOR') ON CONFLICT (correo) DO NOTHING", admin);
+                        return d.existe("SELECT 1 FROM usuario WHERE correo = ? AND rol = 'ADMINISTRADOR' AND activo", admin);
                     });
                     log.acceso("bootstrap_admin=" + (creado ? "OK" : "CUENTA_EXISTENTE"));
                     System.out.println(creado ? "Administrador activo listo." : "El correo ya está registrado con otro rol o inactivo.");

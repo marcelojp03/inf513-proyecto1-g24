@@ -40,6 +40,21 @@ public final class CorreoRed {
         buzon = config.pop().host().toLowerCase(Locale.ROOT) + "\n" + config.pop().usuario();
     }
 
+    public int contarMensajes() throws MessagingException {
+        Servidor pop = config.pop();
+        Session sesion = sesion("pop3", pop);
+        try (Store store = sesion.getStore("pop3")) {
+            store.connect(pop.host(), pop.puerto(), pop.usuario(), pop.clave());
+            Folder inbox = store.getFolder("INBOX");
+            inbox.open(Folder.READ_ONLY);
+            try {
+                return inbox.getMessageCount();
+            } finally {
+                inbox.close(false);
+            }
+        }
+    }
+
     public int leer(FlujoCorreo flujo) throws MessagingException, SQLException {
         Servidor pop = config.pop();
         Session sesion = sesion("pop3", pop);

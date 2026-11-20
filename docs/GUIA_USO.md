@@ -227,6 +227,26 @@ Los pedidos de habilitación con nombres e IPs se guardan fuera del repositorio:
 
 La demora normal es de segundos: el sistema mira el buzón cada 8 segundos y responde enseguida. Gmail puede sumar hasta un minuto la primera vez o si el remitente es nuevo; marcarlo como seguro ayuda.
 
+### Cuando el docente habilite las IPs
+
+No hace falta tocar código, solo `.env`:
+
+```ini
+SMTP_HOST=mail.tecnoweb.org.bo
+SMTP_PORT=25
+SMTP_SECURITY=PLAIN
+# borrá SMTP_USER y SMTP_PASSWORD: ese servidor no autentica con este cliente
+MAIL_FROM=grupo24sa@tecnoweb.org.bo
+```
+
+Después verificá **antes de la demo**:
+
+```powershell
+.\ejecutar.ps1 --verificar-correo
+```
+
+Ese comando inicia sesión en POP3, informa cuántos mensajes hay y manda un correo de prueba a `MAIL_FROM`. Si dice `POP3 OK ... SMTP OK`, el relay quedó habilitado y podés reiniciar el poller. Si falla, `logs/error.log` guarda el motivo enmascarado y hay que volver a Gmail.
+
 ## 10. Base de datos: local o de la cátedra
 
 La base se elige en `.env`; el esquema es el mismo (14 tablas) en las dos:
