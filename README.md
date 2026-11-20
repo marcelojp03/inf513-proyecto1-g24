@@ -140,7 +140,7 @@ Para una demostración rápida, `sql/02_datos_demo.sql` carga empresa, cargo, in
 - Esquema aplicado sobre PostgreSQL 17: 14 tablas.
 - Prueba integral `IntegracionCorreoTest` con GreenMail y PostgreSQL nativo (esta instancia no usa Docker): código de acceso entregado por SMTP, comando autenticado ejecutado, token rechazado al reutilizarse, `PERMISO` para rol incorrecto, releído del buzón sin duplicados y correo anterior al corte ignorado. Resultado: 1 prueba, 0 fallos.
 - Contra el servidor de la cátedra se verificaron la conexión PostgreSQL, el login POP3 y la lectura del buzón en modo solo lectura. El `HELP` del 19 de junio quedó `IGNORADO_ANTIGUO`.
-- Envío real verificado: el SMTP de la cátedra rechaza destinatarios externos y solo ofrece `CRAM-MD5`; con SMTP de Gmail y App Password, `ACCESO[]` enviado desde la cuenta registrada produjo `ACEPTADO_SMTP` y un token vigente en `token_acceso`.
+- Envío real verificado: el SMTP de la cátedra acepta destinatarios externos y el mensaje completo (`250 Message accepted for delivery` hacia Gmail). También se probó el respaldo por Gmail con App Password.
 
 ## 9. Límites conocidos
 
@@ -149,6 +149,7 @@ Para una demostración rápida, `sql/02_datos_demo.sql` carga empresa, cargo, in
 - La cola guarda el cuerpo pendiente hasta 3 intentos; no guarda credenciales ni códigos de acceso.
 - El relay de la cátedra ya está habilitado; si vuelve a bloquearse, el respaldo es Gmail. Un solo equipo debe correr el poller por buzón.
 - No hay adjuntos, OCR ni IA: quedan fuera de este parcial.
+
 
 
 
