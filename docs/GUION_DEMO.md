@@ -8,12 +8,14 @@ Los datos ya están cargados con `sql/02_datos_demo.sql` y `sql/03_datos_prueba_
 |---|---|
 | Usuarios | 7: Marcelo (admin), Letizia (reclutador), Luis (candidato), Pedro (prueba), un reclutador institucional y dos ficticios |
 | Empresa | FICCT, contacto `marcelojp03@gmail.com` |
-| Cargo | Analista de datos, Administración, 12 meses |
+| Cargo | Analista de datos (1) y Asistente administrativo (2) |
 | Instrumentos | `TEC-01` y `PER-01`, ambos versión 1 |
-| Expedientes B | Luis 79, Ana Demo 86, Carlos Demo 61 y Pedro sin consolidar |
-| Planes y pruebas | 4 planes; 6 pruebas calificadas y 2 pendientes (las de Pedro) |
-| Consentimientos | Evaluación en cuatro; informe empresarial en Luis y Ana |
-| Trazabilidad | 14 eventos con actor y motivo |
+| Expedientes A | 2: Ana `APTO` con consolidado 90 y Carlos `OBSERVADO` |
+| Expedientes B | 7: Luis 79, Ana 86, Carlos 61, Pedro sin consolidar, Ana cargo 2 con 90, Carlos cargo 2 `OBSERVADO` y Luis cargo 2 `NO_APTO` |
+| Planes y pruebas | 6 planes y 11 pruebas (9 calificadas, 2 pendientes de Pedro) |
+| Consolidados | 5 |
+| Consentimientos | Evaluación en 9 expedientes; informe empresarial en 3 |
+| Trazabilidad | 25 eventos con actor y motivo |
 | Informes | Ninguno: el informe se emite en vivo |
 
 ## Reparto
@@ -101,6 +103,7 @@ Qué destacar: la nota la registra una persona del personal, no el candidato; el
 | 1 | `RANKING["1"]` |
 | 2 | `MATRIZ["1"]` |
 | 3 | `BUSPER["1","70"]` |
+| 4 | `RANKING["2"]` |
 
 Qué destacar: ahora aparecen cuatro candidatos; solo cuentan los `APTO` con consentimiento y consolidado; la salida usa IDs y `MATRIZ` desglosa los 25 puntos por factor.
 
@@ -122,6 +125,9 @@ Alternativa con Pedro, si sobra tiempo: `CONSEN["4","INFORME_EMPRESA","SI","marc
 |---|---|
 | 1 | `ESTAD[]` |
 | 2 | `REPCAR["1"]` |
+| 3 | `REPCAR["2"]` |
+
+Qué destacar: `ESTAD` muestra los dos procesos (A y B) y los estados `APTO`, `OBSERVADO` y `NO_APTO`; `REPCAR` compara el cargo 1 (4 registrados, 3 consolidados, promedio 75,33) con el cargo 2 (3 registrados, 1 consolidado, promedio 90).
 
 ### 14:30–15:00 · Cierre
 

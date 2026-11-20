@@ -89,7 +89,8 @@ Anotá el ID del informe (normalmente `1`).
 | Asunto | Cuerpo | Qué hace |
 |---|---|---|
 | `ESTAD[]` | `TOKEN: <código admin>` | Resumen general de expedientes y evaluaciones |
-| `REPCAR["1"]` | `TOKEN: <código admin>` | Reporte del cargo con promedios |
+| `REPCAR["1"]` | `TOKEN: <código admin>` | Reporte del cargo 1 con promedios |
+| `REPCAR["2"]` | `TOKEN: <código admin>` | Reporte del cargo 2 con promedios |
 
 ## Si algo falla
 

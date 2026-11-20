@@ -124,7 +124,7 @@ Los datos son ficticios. El personal se crea con el administrador; las cuentas d
 6. `INFORME`, `CONSEN["<expId>","INFORME_EMPRESA","SI","<correo de la empresa>"]`, `DESINF`, `INFCON`.
 7. `BUSPER`, `RANKING`, `MATRIZ`, `ESTAD`, `REPCAR`.
 
-Para una demostración rápida, `sql/02_datos_demo.sql` carga empresa, cargo, instrumentos, tres expedientes con pruebas calificadas y consentimientos. Es idempotente y no se ejecuta solo: hay que aplicarlo a mano sobre la base elegida.
+Para una demostración rápida, `sql/02_datos_demo.sql` carga empresa, cargo, instrumentos, tres expedientes con pruebas calificadas y consentimientos. `sql/05_datos_metricas.sql` agrega un segundo cargo, expedientes A y estados variados para los reportes. Son idempotentes y no se ejecutan solos: hay que aplicarlos a mano sobre la base elegida.
 
 ## 7. Reglas de calificación y ranking
 

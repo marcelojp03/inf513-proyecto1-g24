@@ -26,9 +26,12 @@ Datos ya cargados:
 |---|---|
 | Empresa FICCT | 1 |
 | Cargo Analista de datos | 1 |
+| Cargo Asistente administrativo | 2 |
 | Instrumentos TEC-01 y PER-01 | 1 y 2 |
 | Expediente B de Luis | 1 |
 | Expedientes de Ana y Carlos Demo | 2 y 3 |
+| Expedientes A de Ana y Carlos | 5 y 6 |
+| Expedientes B del cargo 2 | 7 (Ana), 8 (Carlos, OBSERVADO) y 9 (Luis, NO_APTO) |
 | Evaluaciones de Luis | 1 y 2 |
 | Consolidado de Luis | 79 |
 | Pedro, candidato de prueba | usuario 6, expediente 4, evaluaciones 7 y 8 sin responder |
@@ -67,10 +70,12 @@ Si un ID no coincide, usá el que devuelva el comando anterior.
 | Asunto | Cuerpo | Qué hace |
 |---|---|---|
 | `RANKING["1"]` | `TOKEN: <código>` | Ordena candidatos del cargo por compatibilidad `DEMO_V1` |
+| `RANKING["2"]` | `TOKEN: <código>` | Ordena candidatos del segundo cargo |
 | `MATRIZ["1"]` | `TOKEN: <código>` | Igual que ranking, con el desglose de los cuatro factores |
 | `BUSPER["1","70"]` | `TOKEN: <código>` | Filtra candidatos con puntaje mayor o igual a 70 |
 | `ESTAD[]` | `TOKEN: <código>` | Cuenta expedientes A y B, consentimientos, planes y consolidados |
-| `REPCAR["1"]` | `TOKEN: <código>` | Métricas y promedio consolidado del cargo |
+| `REPCAR["1"]` | `TOKEN: <código>` | Métricas y promedio consolidado del cargo 1 |
+| `REPCAR["2"]` | `TOKEN: <código>` | Métricas y promedio consolidado del cargo 2 |
 
 ### 1.4 Altas en vivo (opcional)
 
