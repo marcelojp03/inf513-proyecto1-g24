@@ -70,6 +70,8 @@ TOKEN: AbC123...
 
 No respondas el correo del código: mandá uno nuevo. El sistema contesta al remitente con el resultado o con un error explicativo.
 
+> Las respuestas llegan desde la cuenta configurada en `MAIL_FROM`, no desde el buzón de la cátedra. En esta instalación es una cuenta Gmail: revisá spam la primera vez y marcá el remitente como seguro.
+
 ## 5. Catálogo de comandos
 
 ### CU1 · Usuarios

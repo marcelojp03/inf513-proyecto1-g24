@@ -46,6 +46,7 @@ Decisiones de diseño:
 - **El código se genera al despachar**, nunca se guarda en claro: en `token_acceso` solo queda su SHA-256.
 - **Idempotencia POP3**: cada mensaje se identifica por `UIDL` y se registra por huella; releer el buzón no reprocesa.
 - **Cola transaccional**: se reclama el envío (`ENVIANDO`) antes de hablar con SMTP. Un corte entre el envío y el commit deja el registro `INDETERMINADO` y no se reenvía solo, para no duplicar informes.
+- **Canal de correo en la cátedra**: la lectura POP3 usa `mail.tecnoweb.org.bo:110`. Ese mismo servidor rechaza relay externo (`550 5.7.1 Relaying denied`) y solo anuncia `AUTH CRAM-MD5`, que el cliente no soporta; por eso las respuestas salen por SMTP de Gmail con App Password y `MAIL_FROM` debe ser la cuenta autenticada. El buzón de lectura sigue siendo el de la cátedra.
 - **Consentimiento**: sin consentimiento de evaluación vigente no se asignan ni califican pruebas ni se despachan respuestas con datos del expediente. El informe empresarial exige además autorización para el destinatario actual.
 - **Todo acceso a datos usa `PreparedStatement`** y las mutaciones van en transacción con bloqueo de asesoría (`pg_advisory_xact_lock`).
 
@@ -130,8 +131,8 @@ Los datos son ficticios. El personal se crea con el administrador; las cuentas d
 - `mvn package` correcto.
 - Esquema aplicado sobre PostgreSQL 17: 14 tablas.
 - Prueba integral `IntegracionCorreoTest` con GreenMail y PostgreSQL nativo (esta instancia no usa Docker): código de acceso entregado por SMTP, comando autenticado ejecutado, token rechazado al reutilizarse, `PERMISO` para rol incorrecto, releído del buzón sin duplicados y correo anterior al corte ignorado. Resultado: 1 prueba, 0 fallos.
-- Contra el servidor de la cátedra se verificaron la conexión PostgreSQL, el login POP3 y la lectura del buzón en modo solo lectura. El `HELP` del 19 de junio quedó `IGNORADO_ANTIGUO` y no se encoló ninguna respuesta.
-- El envío SMTP real contra el servidor de la cátedra todavía no se ejecutó; la prueba integral lo cubre solo con GreenMail.
+- Contra el servidor de la cátedra se verificaron la conexión PostgreSQL, el login POP3 y la lectura del buzón en modo solo lectura. El `HELP` del 19 de junio quedó `IGNORADO_ANTIGUO`.
+- Envío real verificado: el SMTP de la cátedra rechaza destinatarios externos y solo ofrece `CRAM-MD5`; con SMTP de Gmail y App Password, `ACCESO[]` enviado desde la cuenta registrada produjo `ACEPTADO_SMTP` y un token vigente en `token_acceso`.
 
 ## 9. Límites conocidos
 

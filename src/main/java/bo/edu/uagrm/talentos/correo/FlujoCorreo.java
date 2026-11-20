@@ -188,7 +188,7 @@ public final class FlujoCorreo {
                 entrega.enviar(reclamo.destino(), reclamo.asunto(), reclamo.cuerpo());
             } catch (MessagingException e) {
                 Envio envio = base.transaccion(db -> fallar(db, reclamo));
-                log.error("salida=" + envio.id() + " estado=" + envio.estado());
+                log.error("salida=" + envio.id() + " estado=" + envio.estado() + " motivo=" + diagnostico(e));
                 continue;
             }
             Envio envio = base.transaccion(db -> resolver(db, reclamo.id(), "ACEPTADO_SMTP"));
@@ -253,5 +253,17 @@ public final class FlujoCorreo {
                 UPDATE correo_salida SET estado = ?, cuerpo = NULL, resuelto_en = clock_timestamp() WHERE id = ?
                 """, estado, id);
         return new Envio(id, estado);
+    }
+
+    private static String diagnostico(MessagingException e) {
+        StringBuilder texto = new StringBuilder();
+        Throwable actual = e;
+        for (int i = 0; actual != null && i < 4; i++) {
+            if (actual.getMessage() != null) texto.append(" | ").append(actual.getMessage());
+            actual = actual instanceof MessagingException mensaje && mensaje.getNextException() != null
+                    ? mensaje.getNextException() : actual.getCause();
+        }
+        String limpio = texto.toString().replaceAll("[\\w.+-]+@[\\w.-]+", "<correo>").replaceAll("[\\r\\n]+", " ").strip();
+        return limpio.length() > 300 ? limpio.substring(0, 300) : limpio;
     }
 }

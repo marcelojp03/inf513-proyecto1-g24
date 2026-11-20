@@ -94,7 +94,7 @@ public final class CorreoRed {
         var origen = mensaje.getFrom();
         if (origen == null || origen.length != 1 || !(origen[0] instanceof InternetAddress direccion) || direccion.isGroup()) return null;
         String correo = Argumentos.normalizarCorreo(direccion.getAddress());
-        return config.remitente().equals(correo) || automatico(mensaje) ? null : correo;
+        return automatico(mensaje) ? null : correo;
     }
 
     private static boolean automatico(Message mensaje) throws MessagingException {
