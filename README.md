@@ -48,7 +48,7 @@ Decisiones de diseño:
 - **El código se genera al despachar**, nunca se guarda en claro: en `token_acceso` solo queda su SHA-256.
 - **Idempotencia POP3**: cada mensaje se identifica por `UIDL` y se registra por huella; releer el buzón no reprocesa.
 - **Cola transaccional**: se reclama el envío (`ENVIANDO`) antes de hablar con SMTP. Un corte entre el envío y el commit deja el registro `INDETERMINADO` y no se reenvía solo, para no duplicar informes.
-- **Canal de correo en la cátedra**: la lectura POP3 usa `mail.tecnoweb.org.bo:110`. Ese mismo servidor rechaza relay externo (`550 5.7.1 Relaying denied`) y solo anuncia `AUTH CRAM-MD5`, que el cliente no soporta; por eso las respuestas salen por SMTP de Gmail con App Password y `MAIL_FROM` debe ser la cuenta autenticada. El buzón de lectura sigue siendo el de la cátedra.
+- **Canal de correo en la cátedra**: POP3 y SMTP usan `mail.tecnoweb.org.bo` (110 y 25). El relay externo estuvo bloqueado y las respuestas salieron por Gmail; cuando la cátedra habilitó las IPs, se volvió al SMTP propio. `--probar-relay` muestra el diálogo y el veredicto. La alternativa Gmail sigue documentada como respaldo.
 - **Consentimiento**: sin consentimiento de evaluación vigente no se asignan ni califican pruebas ni se despachan respuestas con datos del expediente. El informe empresarial exige además autorización para el destinatario actual.
 - **Todo acceso a datos usa `PreparedStatement`** y las mutaciones van en transacción con bloqueo de asesoría (`pg_advisory_xact_lock`).
 
@@ -92,6 +92,7 @@ Primer administrador:
 .\ejecutar.ps1 --crear-admin      # usa ADMIN_EMAIL
 .\ejecutar.ps1 --una-vez          # un ciclo, útil para probar
 .\ejecutar.ps1 --verificar-correo # POP3 + envío de prueba a MAIL_FROM
+.\ejecutar.ps1 --probar-relay    # muestra si el SMTP de la cátedra acepta un destinatario externo
 .\ejecutar.ps1                    # bucle continuo
 ```
 
@@ -144,6 +145,10 @@ Para una demostración rápida, `sql/02_datos_demo.sql` carga empresa, cargo, in
 - El puntaje y el ranking son de demostración.
 - Un envío cortado entre SMTP y el commit queda `INDETERMINADO` y requiere revisión manual; se prefiere no duplicar antes que reenviar a ciegas.
 - La cola guarda el cuerpo pendiente hasta 3 intentos; no guarda credenciales ni códigos de acceso.
-- El SMTP de la cátedra no relay a externos desde IPs de hogar; hasta que se habilite, las respuestas salen por Gmail. Un solo equipo debe correr el poller por buzón.
+- El relay de la cátedra ya está habilitado; si vuelve a bloquearse, el respaldo es Gmail. Un solo equipo debe correr el poller por buzón.
 - No hay adjuntos, OCR ni IA: quedan fuera de este parcial.
+
+
+
+
 

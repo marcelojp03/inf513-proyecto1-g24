@@ -116,7 +116,7 @@ Qué destacar: el despacho exige consentimiento del candidato y contacto autoriz
 ### 14:30–15:00 · Cierre
 
 - Repo público, README, guía y lista de comandos.
-- Límites: relay de la cátedra pendiente (respuestas por Gmail), ranking `DEMO_V1`, sin adjuntos/OCR/IA.
+- Límites: relay de la cátedra ya habilitado; respuestas desde el buzón del grupo, ranking `DEMO_V1`, sin adjuntos/OCR/IA.
 - Preguntas.
 
 ## Plan B
@@ -136,4 +136,5 @@ Qué destacar: el despacho exige consentimiento del candidato y contacto autoriz
 - El contacto de la empresa es un buzón real para que el informe no rebote.
 - El puntaje lo puso una persona; el sistema no inventa notas.
 - No se muestra `.env` ni se dictan códigos en voz alta.
+
 

@@ -220,8 +220,8 @@ Los datos son ficticios. Reemplazá los IDs por los que devuelva cada respuesta.
 Primero revisá spam. Si el correo de respuesta no aparece:
 
 - El buzón de la cátedra **recibe bien** por POP3; el problema está en la salida.
-- Su SMTP rechaza relay hacia destinatarios externos desde IPs de hogar, con `550 5.7.1 Relaying denied`, y solo anuncia `AUTH CRAM-MD5`.
-- Por eso esta instalación envía las respuestas por **Gmail con App Password**. El remitente que ves es la cuenta Gmail, no el buzón de la cátedra.
+- Al principio su SMTP rechazaba el relay externo con `550 5.7.1 Relaying denied`; hoy está habilitado y las respuestas salen del buzón del grupo.
+- Mientras el relay estuvo bloqueado, esta instalación envió las respuestas por **Gmail con App Password**. Cuando la cátedra habilitó las IPs, se volvió al SMTP propio y el remitente es el buzón del grupo.
 - El grupo solicitó al docente habilitar las IPs de los hogares. Mientras eso no ocurra, no cambies el SMTP a `mail.tecnoweb.org.bo`, porque el envío va a fallar.
 - Si el docente habilita el relay, alcanza con volver `SMTP_*` al servidor de la cátedra y poner `MAIL_FROM` en el buzón.
 
@@ -250,6 +250,12 @@ Después verificá **antes de la demo**:
 ```
 
 Ese comando inicia sesión en POP3, informa cuántos mensajes hay y manda un correo de prueba a `MAIL_FROM`. Si dice `POP3 OK ... SMTP OK`, el relay quedó habilitado y podés reiniciar el poller. Si falla, `logs/error.log` guarda el motivo enmascarado y hay que volver a Gmail.
+
+Para mostrar el rechazo en pantalla sin enviar nada:
+
+```powershell
+.\ejecutar.ps1 --probar-relay
+```
 
 ## 10. Base de datos: local o de la cátedra
 
@@ -286,4 +292,8 @@ Primer parcial/
 ├── .env                    ← NO se sube
 └── .env.example            ← se sube, con valores vacíos
 ```
+
+
+
+
 

@@ -2,6 +2,7 @@ package bo.edu.uagrm.talentos;
 
 import bo.edu.uagrm.talentos.correo.CorreoRed;
 import bo.edu.uagrm.talentos.correo.FlujoCorreo;
+import bo.edu.uagrm.talentos.correo.SondaRelay;
 import bo.edu.uagrm.talentos.db.BaseDatos;
 import jakarta.mail.MessagingException;
 
@@ -19,25 +20,28 @@ public final class Main {
 
     private static int iniciar(String[] args) {
         String opcion = args.length == 0 ? "" : args[0];
-        if (args.length > 1 || !java.util.Set.of("", "--help", "--una-vez", "--crear-admin", "--verificar-correo").contains(opcion)) {
+        if (args.length > 1 || !java.util.Set.of("", "--help", "--una-vez", "--crear-admin", "--verificar-correo", "--probar-relay").contains(opcion)) {
             System.err.println("Opción no reconocida. Usá --help.");
             return 2;
         }
         if (opcion.equals("--help")) {
-            System.out.println("Banco de Talentos 18B | java -jar banco-talentos-mail.jar [--una-vez | --crear-admin | --verificar-correo]\n"
+            System.out.println("Banco de Talentos 18B | java -jar banco-talentos-mail.jar [--una-vez | --crear-admin | --verificar-correo | --probar-relay]\n"
                     + "Configuración por variables de entorno. Consultá README.md.");
             return 0;
         }
 
         var configuracion = new Configuracion(System.getenv());
         boolean verificar = opcion.equals("--verificar-correo");
+        boolean probarRelay = opcion.equals("--probar-relay");
         BaseDatos base = null;
-        Configuracion.Correo correo;
+        Configuracion.Correo correo = null;
         String primerAdmin = null;
         java.time.Instant desde;
         try {
             desde = configuracion.correoDesde();
-            if (verificar) {
+            if (probarRelay) {
+                // Solo hace falta la configuración del servidor a probar.
+            } else if (verificar) {
                 correo = configuracion.correo();
             } else {
                 base = configuracion.baseDatos();
@@ -50,6 +54,18 @@ public final class Main {
         }
 
         try (var log = new Bitacora(Path.of(configuracion.valor("LOG_DIR", "logs")))) {
+            if (probarRelay) {
+                try {
+                    boolean aceptado = SondaRelay.probar(configuracion.relayHost(), configuracion.relayPuerto(),
+                            configuracion.relayDesde(), configuracion.relayHasta());
+                    log.acceso("relay=" + (aceptado ? "ACEPTADO" : "RECHAZADO"));
+                    return aceptado ? 0 : 1;
+                } catch (IOException e) {
+                    log.error("relay=ERROR");
+                    System.err.println("No se pudo conectar con el servidor. Revisá host y puerto.");
+                    return 1;
+                }
+            }
             if (verificar) {
                 var red = new CorreoRed(correo, log);
                 try {

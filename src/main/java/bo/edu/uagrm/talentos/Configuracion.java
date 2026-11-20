@@ -29,6 +29,31 @@ public record Configuracion(Map<String, String> entorno) {
         return entero("TOKEN_MINUTES", 15, 1, 120);
     }
 
+    public String relayHost() {
+        return valor("RELAY_HOST", "mail.tecnoweb.org.bo");
+    }
+
+    public int relayPuerto() {
+        return entero("RELAY_PORT", 25, 1, 65535);
+    }
+
+    public String relayDesde() {
+        return direccionDe("RELAY_FROM", "MAIL_FROM");
+    }
+
+    public String relayHasta() {
+        return direccionDe("RELAY_TO", "ADMIN_EMAIL");
+    }
+
+    private String direccionDe(String variable, String alternativa) {
+        String valor = entorno.getOrDefault(variable, "").strip();
+        if (valor.isEmpty()) valor = entorno.getOrDefault(alternativa, "").strip();
+        if (valor.isEmpty()) throw new IllegalArgumentException("Falta " + variable + " o " + alternativa + ".");
+        String direccion = Argumentos.normalizarCorreo(valor);
+        if (direccion == null) throw new IllegalArgumentException(variable + " o " + alternativa + " deben ser direcciones completas.");
+        return direccion;
+    }
+
     public BaseDatos baseDatos() {
         return new BaseDatos(requerida("DB_URL"), requerida("DB_USER"), requerida("DB_PASSWORD"));
     }
