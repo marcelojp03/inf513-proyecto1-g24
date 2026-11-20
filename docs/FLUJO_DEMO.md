@@ -20,7 +20,7 @@ cd "C:\UAGRM\Tecnologia Web\proyecto-grupo18b\Primer parcial"
 
 `--verificar-correo` debe decir `POP3 OK ... SMTP OK`. Dejá la segunda terminal abierta: ahí se ve `[ENTRADA #]` y `[SALIDA #]` de cada correo. **Un solo equipo** corre el poller.
 
-Datos ya cargados en la base:
+Datos ya cargados:
 
 | Dato | ID |
 |---|---|
@@ -31,6 +31,7 @@ Datos ya cargados en la base:
 | Expedientes de Ana y Carlos Demo | 2 y 3 |
 | Evaluaciones de Luis | 1 y 2 |
 | Consolidado de Luis | 79 |
+| Pedro, candidato de prueba | usuario 6, expediente 4, evaluaciones 7 y 8 sin responder |
 
 Si un ID no coincide, usá el que devuelva el comando anterior.
 
@@ -38,11 +39,9 @@ Si un ID no coincide, usá el que devuelva el comando anterior.
 
 ## Bloque 0 · Cualquiera, sin código
 
-| Asunto | Cuerpo |
-|---|---|
-| `HELP[]` | vacío |
-
-Muestra el catálogo y demuestra que el sistema lee el buzón.
+| Asunto | Cuerpo | Qué hace |
+|---|---|---|
+| `HELP[]` | vacío | Devuelve el catálogo y demuestra que el sistema lee el buzón |
 
 ---
 
@@ -50,37 +49,35 @@ Muestra el catálogo y demuestra que el sistema lee el buzón.
 
 ### 1.1 Pedir código
 
-| Asunto | Cuerpo |
-|---|---|
-| `ACCESO[]` | vacío |
-
-Guardá el código que llega.
+| Asunto | Cuerpo | Qué hace |
+|---|---|---|
+| `ACCESO[]` | vacío | Envía un código de sesión de 30 minutos a tu correo |
 
 ### 1.2 Consultas de administración
 
-| Asunto | Cuerpo |
-|---|---|
-| `LISUSU[]` | `TOKEN: <código>` |
-| `LISEMP[]` | `TOKEN: <código>` |
-| `LISCAR[]` | `TOKEN: <código>` |
-| `LISINS[]` | `TOKEN: <código>` |
+| Asunto | Cuerpo | Qué hace |
+|---|---|---|
+| `LISUSU[]` | `TOKEN: <código>` | Lista usuarios con rol y estado |
+| `LISEMP[]` | `TOKEN: <código>` | Lista empresas y su contacto de informes |
+| `LISCAR[]` | `TOKEN: <código>` | Lista perfiles de cargo con requisitos |
+| `LISINS[]` | `TOKEN: <código>` | Lista instrumentos con código y versión |
 
 ### 1.3 Ranking y reportes
 
-| Asunto | Cuerpo |
-|---|---|
-| `RANKING["1"]` | `TOKEN: <código>` |
-| `MATRIZ["1"]` | `TOKEN: <código>` |
-| `BUSPER["1","70"]` | `TOKEN: <código>` |
-| `ESTAD[]` | `TOKEN: <código>` |
-| `REPCAR["1"]` | `TOKEN: <código>` |
+| Asunto | Cuerpo | Qué hace |
+|---|---|---|
+| `RANKING["1"]` | `TOKEN: <código>` | Ordena candidatos del cargo por compatibilidad `DEMO_V1` |
+| `MATRIZ["1"]` | `TOKEN: <código>` | Igual que ranking, con el desglose de los cuatro factores |
+| `BUSPER["1","70"]` | `TOKEN: <código>` | Filtra candidatos con puntaje mayor o igual a 70 |
+| `ESTAD[]` | `TOKEN: <código>` | Cuenta expedientes A y B, consentimientos, planes y consolidados |
+| `REPCAR["1"]` | `TOKEN: <código>` | Métricas y promedio consolidado del cargo |
 
 ### 1.4 Altas en vivo (opcional)
 
-| Asunto | Cuerpo | Qué muestra |
+| Asunto | Cuerpo | Qué hace |
 |---|---|---|
-| `INSUSU["candidato.demo@example.test","CANDIDATO"]` | `TOKEN: <código>` | CU1 |
-| `INSEMP["Nova SRL","novedades@example.test"]` | `TOKEN: <código>` | CU3 |
+| `INSUSU["candidato.demo@example.test","CANDIDATO"]` | `TOKEN: <código>` | Registra una cuenta nueva con rol |
+| `INSEMP["Nova SRL","novedades@example.test"]` | `TOKEN: <código>` | Registra una empresa y su correo de informes |
 
 ---
 
@@ -88,37 +85,37 @@ Guardá el código que llega.
 
 ### 2.1 Pedir código
 
-| Asunto | Cuerpo |
-|---|---|
-| `ACCESO[]` | vacío |
+| Asunto | Cuerpo | Qué hace |
+|---|---|---|
+| `ACCESO[]` | vacío | Envía el código de sesión de Letizia |
 
 ### 2.2 Trazabilidad y plan
 
-| Asunto | Cuerpo |
-|---|---|
-| `HISEXP["1"]` | `TOKEN: <código>` |
-| `LISPLAN["1"]` | `TOKEN: <código>` |
-| `VERPRU["1"]` | `TOKEN: <código>` |
+| Asunto | Cuerpo | Qué hace |
+|---|---|---|
+| `HISEXP["1"]` | `TOKEN: <código>` | Muestra el historial de acciones con actor y motivo |
+| `LISPLAN["1"]` | `TOKEN: <código>` | Muestra el plan, sus pruebas y el estado de cada una |
+| `VERPRU["1"]` | `TOKEN: <código>` | Muestra consigna, respuesta y puntaje de una prueba |
 
 ### 2.3 Informe y despacho
 
-| Asunto | Cuerpo |
-|---|---|
-| `INFORME["1","Cumple el perfil del cargo"]` | `TOKEN: <código>` |
+| Asunto | Cuerpo | Qué hace |
+|---|---|---|
+| `INFORME["1","Cumple el perfil del cargo"]` | `TOKEN: <código>` | Emite el informe individual con resultados y recomendación |
 
 Anotá el ID del informe que devuelve (normalmente `1`).
 
-| Asunto | Cuerpo |
-|---|---|
-| `DESINF["1"]` | `TOKEN: <código>` |
-| `INFCON["1"]` | `TOKEN: <código>` |
+| Asunto | Cuerpo | Qué hace |
+|---|---|---|
+| `DESINF["1"]` | `TOKEN: <código>` | Encola el envío del informe al contacto autorizado |
+| `INFCON["1"]` | `TOKEN: <código>` | Muestra el informe y el estado de su despacho |
 
 ### 2.4 Reportes del rol
 
-| Asunto | Cuerpo |
-|---|---|
-| `ESTAD[]` | `TOKEN: <código>` |
-| `REPCAR["1"]` | `TOKEN: <código>` |
+| Asunto | Cuerpo | Qué hace |
+|---|---|---|
+| `ESTAD[]` | `TOKEN: <código>` | Resumen general de expedientes y evaluaciones |
+| `REPCAR["1"]` | `TOKEN: <código>` | Reporte del cargo con promedios |
 
 ---
 
@@ -126,91 +123,91 @@ Anotá el ID del informe que devuelve (normalmente `1`).
 
 ### 3.1 Pedir código
 
-| Asunto | Cuerpo |
-|---|---|
-| `ACCESO[]` | vacío |
+| Asunto | Cuerpo | Qué hace |
+|---|---|---|
+| `ACCESO[]` | vacío | Envía el código de sesión de Luis |
 
 ### 3.2 Consultar su expediente
 
-| Asunto | Cuerpo |
-|---|---|
-| `MISEXP[]` | `TOKEN: <código>` |
-| `CONSEXP["1"]` | `TOKEN: <código>` |
-| `VERPRU["1"]` | `TOKEN: <código>` |
-| `LISINF["1"]` | `TOKEN: <código>` |
+| Asunto | Cuerpo | Qué hace |
+|---|---|---|
+| `MISEXP[]` | `TOKEN: <código>` | Lista solo los expedientes del titular |
+| `CONSEXP["1"]` | `TOKEN: <código>` | Muestra perfil, estado, plan, puntaje y consentimientos |
+| `VERPRU["1"]` | `TOKEN: <código>` | Muestra la consigna y su respuesta registrada |
+| `LISINF["1"]` | `TOKEN: <código>` | Lista los informes del expediente y su despacho |
 
 ### 3.3 Alta universitaria en vivo (opcional)
 
-| Asunto | Cuerpo |
-|---|---|
-| `INSEXP["Luis Guzman","Administracion","18","excel;atencion","SI"]` | `TOKEN: <código>` |
+| Asunto | Cuerpo | Qué hace |
+|---|---|---|
+| `INSEXP["Luis Guzman","Administracion","18","excel;atencion","SI"]` | `TOKEN: <código>` | Crea un expediente A interno, sin publicarlo |
 
 Anotá el ID nuevo (normalmente `4`) y autorizá la evaluación:
 
-| Asunto | Cuerpo |
-|---|---|
-| `CONSEN["4","EVALUACION","SI",""]` | `TOKEN: <código>` |
+| Asunto | Cuerpo | Qué hace |
+|---|---|---|
+| `CONSEN["4","EVALUACION","SI",""]` | `TOKEN: <código>` | Otorga consentimiento de evaluación para ese expediente |
 
 ---
 
-## Bloque 4 · Flujo empresarial completo en vivo (opcional, 10 correos)
+## Bloque 4 · Flujo B completo en vivo (opcional, 10 correos)
 
 Hacerlo solo si sobra tiempo. Crea un cargo nuevo para no chocar con el expediente B ya cargado.
 
 ### 4.1 Administrador
 
-| Asunto | Cuerpo |
-|---|---|
-| `INSCAR["1","Asistente administrativo","Administracion","6","excel;redaccion","Apoyar la gestion documental"]` | `TOKEN: <código admin>` |
+| Asunto | Cuerpo | Qué hace |
+|---|---|---|
+| `INSCAR["1","Asistente administrativo","Administracion","6","excel;redaccion","Apoyar la gestion documental"]` | `TOKEN: <código admin>` | Crea un perfil de cargo nuevo |
 
 Anotá el ID del cargo (normalmente `2`).
 
 ### 4.2 Reclutadora
 
-| Asunto | Cuerpo |
-|---|---|
-| `VINCEXP["2","2"]` | `TOKEN: <código de Letizia>` |
+| Asunto | Cuerpo | Qué hace |
+|---|---|---|
+| `VINCEXP["2","2"]` | `TOKEN: <código de Letizia>` | Crea el expediente B del candidato para ese cargo |
 
 Anotá el ID del expediente nuevo (normalmente `4`).
 
 ### 4.3 Candidato
 
-| Asunto | Cuerpo |
-|---|---|
-| `ACTEXP["4","Luis Guzman","Administracion","18","excel;atencion","SI"]` | `TOKEN: <código de Luis>` |
-| `CONSEN["4","EVALUACION","SI",""]` | `TOKEN: <código de Luis>` |
+| Asunto | Cuerpo | Qué hace |
+|---|---|---|
+| `ACTEXP["4","Luis Guzman","Administracion","18","excel;atencion","SI"]` | `TOKEN: <código de Luis>` | Completa el perfil y lo devuelve a revisión |
+| `CONSEN["4","EVALUACION","SI",""]` | `TOKEN: <código de Luis>` | Autoriza la evaluación de ese expediente |
 
 ### 4.4 Reclutadora
 
-| Asunto | Cuerpo |
-|---|---|
-| `CLASEXP["4","APTO","Revision conforme"]` | `TOKEN: <código de Letizia>` |
-| `ASIGPLAN["4","1,2"]` | `TOKEN: <código de Letizia>` |
-| `LISPLAN["4"]` | `TOKEN: <código de Letizia>` |
+| Asunto | Cuerpo | Qué hace |
+|---|---|---|
+| `CLASEXP["4","APTO","Revision conforme"]` | `TOKEN: <código de Letizia>` | Clasifica el expediente por revisión humana |
+| `ASIGPLAN["4","1,2"]` | `TOKEN: <código de Letizia>` | Asigna las pruebas 1 y 2 al expediente |
+| `LISPLAN["4"]` | `TOKEN: <código de Letizia>` | Devuelve los IDs de evaluación asignados |
 
 `LISPLAN` devuelve los IDs de evaluación (normalmente `7` y `8`).
 
 ### 4.5 Candidato
 
-| Asunto | Cuerpo |
-|---|---|
-| `RESPRU["7","Automatizaria el reporte y mediria el impacto."]` | `TOKEN: <código de Luis>` |
-| `RESPRU["8","Priorizo por impacto y plazo."]` | `TOKEN: <código de Luis>` |
+| Asunto | Cuerpo | Qué hace |
+|---|---|---|
+| `RESPRU["7","Automatizaria el reporte y mediria el impacto."]` | `TOKEN: <código de Luis>` | Registra la respuesta de la primera prueba |
+| `RESPRU["8","Priorizo por impacto y plazo."]` | `TOKEN: <código de Luis>` | Registra la respuesta de la segunda prueba |
 
 ### 4.6 Reclutadora
 
-| Asunto | Cuerpo |
-|---|---|
-| `CALPRU["7","85","Respuesta aplicada"]` | `TOKEN: <código de Letizia>` |
-| `CALPRU["8","78","Criterio claro"]` | `TOKEN: <código de Letizia>` |
-| `CONSOL["4"]` | `TOKEN: <código de Letizia>` |
+| Asunto | Cuerpo | Qué hace |
+|---|---|---|
+| `CALPRU["7","85","Respuesta aplicada"]` | `TOKEN: <código de Letizia>` | Registra el puntaje manual de la primera prueba |
+| `CALPRU["8","78","Criterio claro"]` | `TOKEN: <código de Letizia>` | Registra el puntaje manual de la segunda prueba |
+| `CONSOL["4"]` | `TOKEN: <código de Letizia>` | Promedia las pruebas calificadas y consolida |
 
 ### 4.7 Administrador
 
-| Asunto | Cuerpo |
-|---|---|
-| `RANKING["2"]` | `TOKEN: <código admin>` |
-| `MATRIZ["2"]` | `TOKEN: <código admin>` |
+| Asunto | Cuerpo | Qué hace |
+|---|---|---|
+| `RANKING["2"]` | `TOKEN: <código admin>` | Ordena los candidatos del cargo nuevo |
+| `MATRIZ["2"]` | `TOKEN: <código admin>` | Muestra el desglose de puntajes del cargo nuevo |
 
 ---
 
@@ -220,34 +217,34 @@ Cuenta: `elproo16399@gmail.com` (usuario 6). Expediente B `4`, plan `4`, evaluac
 
 ### 5.1 Pedro
 
-| Asunto | Cuerpo |
-|---|---|
-| `ACCESO[]` | vacío |
-| `MISEXP[]` | `TOKEN: <código de Pedro>` |
-| `CONSEXP["4"]` | `TOKEN: <código de Pedro>` |
-| `LISPLAN["4"]` | `TOKEN: <código de Pedro>` |
-| `VERPRU["7"]` | `TOKEN: <código de Pedro>` |
-| `RESPRU["7","Automatizaria el reporte y mediria el impacto."]` | `TOKEN: <código de Pedro>` |
-| `RESPRU["8","Priorizo por impacto y plazo."]` | `TOKEN: <código de Pedro>` |
+| Asunto | Cuerpo | Qué hace |
+|---|---|---|
+| `ACCESO[]` | vacío | Envía el código de sesión de Pedro |
+| `MISEXP[]` | `TOKEN: <código de Pedro>` | Lista sus expedientes |
+| `CONSEXP["4"]` | `TOKEN: <código de Pedro>` | Muestra perfil, estado y consentimientos |
+| `LISPLAN["4"]` | `TOKEN: <código de Pedro>` | Muestra las pruebas asignadas y su estado |
+| `VERPRU["7"]` | `TOKEN: <código de Pedro>` | Muestra la consigna de la prueba técnica |
+| `RESPRU["7","Automatizaria el reporte y mediria el impacto."]` | `TOKEN: <código de Pedro>` | Registra la respuesta de la prueba 7 |
+| `RESPRU["8","Priorizo por impacto y plazo."]` | `TOKEN: <código de Pedro>` | Registra la respuesta de la prueba 8 |
 
 ### 5.2 Reclutadora
 
-| Asunto | Cuerpo |
-|---|---|
-| `CALPRU["7","85","Respuesta aplicada"]` | `TOKEN: <código de Letizia>` |
-| `CALPRU["8","78","Criterio claro"]` | `TOKEN: <código de Letizia>` |
-| `CONSOL["4"]` | `TOKEN: <código de Letizia>` |
-| `RANKING["1"]` | `TOKEN: <código de Letizia>` |
+| Asunto | Cuerpo | Qué hace |
+|---|---|---|
+| `CALPRU["7","85","Respuesta aplicada"]` | `TOKEN: <código de Letizia>` | Califica la prueba 7 |
+| `CALPRU["8","78","Criterio claro"]` | `TOKEN: <código de Letizia>` | Califica la prueba 8 |
+| `CONSOL["4"]` | `TOKEN: <código de Letizia>` | Consolida el resultado de Pedro |
+| `RANKING["1"]` | `TOKEN: <código de Letizia>` | Muestra a Pedro junto a los demás candidatos |
 
 Después de `CONSOL`, Pedro aparece en el ranking del cargo 1 junto a Luis, Ana y Carlos.
 
 ### 5.3 Autorización y despacho
 
-| Quién | Asunto | Cuerpo |
-|---|---|---|
-| Pedro | `CONSEN["4","INFORME_EMPRESA","SI","marcelojp03@gmail.com"]` | `TOKEN: <código de Pedro>` |
-| Letizia | `INFORME["4","Cumple el perfil del cargo"]` | `TOKEN: <código de Letizia>` |
-| Letizia | `DESINF["<informeId>"]` | `TOKEN: <código de Letizia>` |
+| Quién | Asunto | Cuerpo | Qué hace |
+|---|---|---|---|
+| Pedro | `CONSEN["4","INFORME_EMPRESA","SI","marcelojp03@gmail.com"]` | `TOKEN: <código de Pedro>` | Autoriza el informe para el contacto de la empresa |
+| Letizia | `INFORME["4","Cumple el perfil del cargo"]` | `TOKEN: <código de Letizia>` | Emite el informe de Pedro |
+| Letizia | `DESINF["<informeId>"]` | `TOKEN: <código de Letizia>` | Encola el despacho del informe |
 
 El administrador no puede ejecutar los pasos de Pedro: `INSEXP`, `MISEXP`, `ACTEXP`, `CONSEN` y `RESPRU` son exclusivos del candidato.
 
@@ -260,7 +257,7 @@ El administrador no puede ejecutar los pasos de Pedro: `INSEXP`, `MISEXP`, `ACTE
 | Solo candidato | `INSEXP`, `MISEXP`, `ACTEXP`, `CONSEN`, `RESPRU` | Candidato |
 | Consulta abierta | `CONSEXP`, `LISPLAN`, `VERPRU`, `LISINF`, `INFCON`, `HELP`, `ACCESO` | Los tres roles |
 
-El administrador **no** puede ejecutar los comandos de candidato: `INSEXP`, `MISEXP`, `ACTEXP`, `CONSEN` y `RESPRU` son del titular del expediente. El candidato solo ve y modifica sus propios registros; el personal requiere consentimiento de evaluación vigente.
+El administrador **no** puede ejecutar los comandos de candidato. El candidato solo ve y modifica sus propios registros; el personal requiere consentimiento de evaluación vigente.
 
 ## Si algo falla
 

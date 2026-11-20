@@ -1,19 +1,19 @@
 # Guion de demostración · 15 minutos
 
-Los datos ya están cargados con `sql/02_datos_demo.sql`; en vivo solo se muestran operaciones por correo.
+Los datos ya están cargados con `sql/02_datos_demo.sql` y `sql/03_datos_prueba_pedro.sql`; en vivo solo se muestran operaciones por correo.
 
 ## Estado inicial de la base
 
 | Dato | Valor |
 |---|---|
-| Usuarios | 5: Marcelo (admin), Letizia (reclutador), Luis (candidato) y dos candidatos ficticios |
+| Usuarios | 6: Marcelo (admin), Letizia (reclutador), Luis (candidato), Pedro (prueba) y dos ficticios |
 | Empresa | FICCT, contacto `marcelojp03@gmail.com` |
 | Cargo | Analista de datos, Administración, 12 meses |
 | Instrumentos | `TEC-01` y `PER-01`, ambos versión 1 |
-| Expedientes B | Luis 79, Ana Demo 86, Carlos Demo 61 |
-| Planes y pruebas | 3 planes, 6 pruebas respondidas y calificadas |
-| Consentimientos | Evaluación en los tres; informe empresarial en Luis y Ana |
-| Trazabilidad | 11 eventos con actor y motivo |
+| Expedientes B | Luis 79, Ana Demo 86, Carlos Demo 61 y Pedro sin consolidar |
+| Planes y pruebas | 4 planes; 6 pruebas calificadas y 2 pendientes (las de Pedro) |
+| Consentimientos | Evaluación en cuatro; informe empresarial en Luis y Ana |
+| Trazabilidad | 14 eventos con actor y motivo |
 | Informes | Ninguno: el informe se emite en vivo |
 
 ## Reparto
@@ -23,6 +23,7 @@ Los datos ya están cargados con `sql/02_datos_demo.sql`; en vivo solo se muestr
 | Marcelo | `ADMINISTRADOR` | `marcelojp03@gmail.com` |
 | Letizia | `RECLUTADOR` | `mendietaletizia@gmail.com` |
 | Luis | `CANDIDATO` | `guzmanluisdavid12@gmail.com` |
+| Pedro | `CANDIDATO` (cuenta de prueba) | `elproo16399@gmail.com` |
 
 ## Antes de la defensa
 
@@ -45,7 +46,7 @@ Los datos ya están cargados con `sql/02_datos_demo.sql`; en vivo solo se muestr
 |---|---|---|
 | 1 | `ACCESO[]` | Código |
 | 2 | `INSUSU["candidato.demo@example.test","CANDIDATO"]` | Usuario registrado |
-| 3 | `LISUSU[]` | 5–6 usuarios |
+| 3 | `LISUSU[]` | 6–7 usuarios |
 
 ### 3:00–4:30 · CU3 · Empresas, cargos e instrumentos
 
@@ -66,7 +67,7 @@ Opcional si sobra tiempo: `INSEMP["Nova SRL","novedades@example.test"]`.
 | 3 | `CONSEN["<nuevoExpId>","EVALUACION","SI",""]` |
 | 4 | `MISEXP[]` y `CONSEXP["<nuevoExpId>"]` |
 
-Qué destacar: el expediente A nace **interno**, no se publica; el expediente B ya existente conserva su propio consentimiento. `CONSEXP` no muestra contactos de terceros.
+Qué destacar: el expediente A nace **interno**, no se publica; el expediente B ya cargado conserva su propio consentimiento. `CONSEXP` no muestra contactos de terceros.
 
 ### 6:30–8:00 · CU4 · Clasificación, plan y trazabilidad (Letizia)
 
@@ -77,16 +78,22 @@ Qué destacar: el expediente A nace **interno**, no se publica; el expediente B 
 
 Qué destacar: cada evento tiene actor, operación y motivo; el plan conserva los instrumentos aplicados.
 
-### 8:00–9:30 · CU5 · Resultados (Letizia)
+### 8:00–10:30 · CU5 · Resultados en vivo (Pedro y Letizia)
 
-| Paso | Correo |
+Pedro tiene el expediente B `4` con las pruebas `7` y `8` sin responder.
+
+| Quién | Correo |
 |---|---|
-| 1 | `VERPRU["1"]` |
-| 2 | `VERPRU["2"]` |
+| Pedro | `VERPRU["7"]` |
+| Pedro | `RESPRU["7","Automatizaria el reporte y mediria el impacto."]` |
+| Pedro | `RESPRU["8","Priorizo por impacto y plazo."]` |
+| Letizia | `CALPRU["7","85","Respuesta aplicada"]` |
+| Letizia | `CALPRU["8","78","Criterio claro"]` |
+| Letizia | `CONSOL["4"]` |
 
-Qué destacar: respuesta, calificación y observación humana. Los tres expedientes ya están consolidados (`DEMO_V1`).
+Qué destacar: la nota la registra una persona del personal, no el candidato; el consolidado aparece recién cuando todas las pruebas están calificadas.
 
-### 9:30–11:30 · CU6 · Búsqueda y ranking (Marcelo)
+### 10:30–12:00 · CU6 · Búsqueda y ranking (Marcelo)
 
 | Paso | Correo |
 |---|---|
@@ -94,9 +101,9 @@ Qué destacar: respuesta, calificación y observación humana. Los tres expedien
 | 2 | `MATRIZ["1"]` |
 | 3 | `BUSPER["1","70"]` |
 
-Qué destacar: solo aparecen candidatos `APTO` con consentimiento y consolidado; la salida usa IDs, no nombres; `MATRIZ` desglosa los 25 puntos por factor.
+Qué destacar: ahora aparecen cuatro candidatos; solo cuentan los `APTO` con consentimiento y consolidado; la salida usa IDs y `MATRIZ` desglosa los 25 puntos por factor.
 
-### 11:30–13:30 · CU7 · Informe y despacho (Letizia)
+### 12:00–13:30 · CU7 · Informe y despacho (Letizia)
 
 | Paso | Correo |
 |---|---|
@@ -105,6 +112,8 @@ Qué destacar: solo aparecen candidatos `APTO` con consentimiento y consolidado;
 | 3 | `INFCON["<informeId>"]` |
 
 Qué destacar: el despacho exige consentimiento del candidato y contacto autorizado; el estado del envío queda registrado. Llega copia a la bandeja de la empresa.
+
+Alternativa con Pedro, si sobra tiempo: `CONSEN["4","INFORME_EMPRESA","SI","marcelojp03@gmail.com"]` y `INFORME["4","..."]`.
 
 ### 13:30–14:30 · CU8 · Reportes (Marcelo)
 
@@ -115,8 +124,8 @@ Qué destacar: el despacho exige consentimiento del candidato y contacto autoriz
 
 ### 14:30–15:00 · Cierre
 
-- Repo público, README, guía y lista de comandos.
-- Límites: relay de la cátedra ya habilitado; respuestas desde el buzón del grupo, ranking `DEMO_V1`, sin adjuntos/OCR/IA.
+- Repo público, README, guía, lista de comandos y flujo para copiar.
+- Límites: ranking `DEMO_V1`, sin adjuntos/OCR/IA; relay de la cátedra habilitado.
 - Preguntas.
 
 ## Plan B
@@ -132,9 +141,8 @@ Qué destacar: el despacho exige consentimiento del candidato y contacto autoriz
 ## Reglas de la demo
 
 - Un solo poller. Dos instancias producen respuestas duplicadas.
-- Los datos de empresa y candidatos ficticios ya están cargados; no se carga nada por SQL durante la demo.
+- Los datos ya están cargados; no se carga nada por SQL durante la demo.
 - El contacto de la empresa es un buzón real para que el informe no rebote.
-- El puntaje lo puso una persona; el sistema no inventa notas.
+- El puntaje lo registra una persona; el sistema no inventa notas.
+- El administrador no puede ejecutar los comandos de candidato: `INSEXP`, `MISEXP`, `ACTEXP`, `CONSEN` y `RESPRU`.
 - No se muestra `.env` ni se dictan códigos en voz alta.
-
-
