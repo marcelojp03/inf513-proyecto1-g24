@@ -46,6 +46,7 @@ Decisiones de diseño:
 - Lista de comandos para copiar: [`docs/COMANDOS.md`](docs/COMANDOS.md).
 - Guion de demostración con roles y tiempos: [`docs/GUION_DEMO.md`](docs/GUION_DEMO.md).
 - Flujo completo para copiar y pegar: [`docs/FLUJO_DEMO.md`](docs/FLUJO_DEMO.md).
+- Guía con solo dos cuentas (admin y candidato): [`docs/GUIA_PERSONAL.md`](docs/GUIA_PERSONAL.md).
 - **El código se genera al despachar**, nunca se guarda en claro: en `token_acceso` solo queda su SHA-256.
 - **Idempotencia POP3**: cada mensaje se identifica por `UIDL` y se registra por huella; releer el buzón no reprocesa.
 - **Cola transaccional**: se reclama el envío (`ENVIANDO`) antes de hablar con SMTP. Un corte entre el envío y el commit deja el registro `INDETERMINADO` y no se reenvía solo, para no duplicar informes.
