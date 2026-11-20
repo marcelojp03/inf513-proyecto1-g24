@@ -227,7 +227,7 @@ Primero revisá spam. Si el correo de respuesta no aparece:
 
 Los pedidos de habilitación con nombres e IPs se guardan fuera del repositorio: son datos personales y el repositorio es público.
 
-La demora normal es de segundos: el sistema mira el buzón cada 8 segundos y responde enseguida. Gmail puede sumar hasta un minuto la primera vez o si el remitente es nuevo; marcarlo como seguro ayuda.
+La demora normal es de segundos: el sistema mira el buzón cada 5 segundos y responde enseguida. El filtro antispam del destinatario puede sumar unos segundos la primera vez.
 
 La consola muestra el recorrido para que se pueda proyectar: `[POP3]` con la cantidad de mensajes, `[ENTRADA #]` con remitente, asunto, comando y resultado, y `[SALIDA #]` con destinatario, asunto y el cuerpo de la respuesta. Los códigos `TOKEN:` se muestran enmascarados.
 
@@ -292,6 +292,8 @@ Primer parcial/
 ├── .env                    ← NO se sube
 └── .env.example            ← se sube, con valores vacíos
 ```
+
+
 
 
 
